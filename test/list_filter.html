@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过滤</title>
+    <script type='text/javascript' src='../js/vue.js'></script>
+</head>
+<body>
+
+    <!-- 
+        收集表单数据：
+            <input type='text'> 则v-model收集的是value值
+            <input type='radio'>则v-model收集的是value值
+            <input type='checkbox'> 要配置value值
+
+        备注：v-model的三个修饰符：
+            lazy:失去焦点再收集数据
+            number:输入字符串转为有效的数字
+            trim：输入首尾空格过渡
+     -->
+
+    <div id='root'>
+        查找：
+        <input type="text" v-model='keyword'>
+        <ul>
+            <li v-for='p in filPerson' :key='p.id'>
+                {{p.name}}-{{p.age}}
+            </li>
+        </ul>
+        <button @click='sortType = 0'>原顺序</button>
+        <button @click='sortType = 1'>升序</button>
+        <button @click='sortType = 2'>降序</button>
+        <hr>
+        <button @click='addPerson'>添加一个人</button>
+        <button @click='addGender'>添加一个参数：性别</button>
+        <hr>
+
+        <form @submit.prevent='demo'>
+            年龄:<input type="number" v-model.number='age' ><br>
+            性别<input type="radio" v-model='gender' value='man'>男
+            <input type="radio" v-model='gender' value='feman'>女
+            <br>
+            
+            爱好:
+            学习<input type='checkbox' v-model='hobby' value='study'>
+            打游戏<input type="checkbox" v-model='hobby' value='game'>
+            吃饭<input type="checkbox" v-model='hobby' value='eat'>
+            <br>
+            所属校区:
+            <select v-model='address'>
+                <option value=''>请选择校区</option>
+                <option value='beijing'>北京</option>
+                <option value='shanghai'>上海</option>
+                <option value='shenzheng'>深圳</option>
+                <option value='wuhang'>武汉</option>
+            </select>
+            <br>
+            <br>
+            其它信息:
+            <textarea v-model.lazy='other'></textarea>
+            <br>
+            <br>
+            <input type="checkbox" v-model='accept'>阅读并接受<a href="http://www.baidu.com">用户协议</a>
+            <button>提交</button>
+        </form>
+    </div>
+
+
+    <script type='text/javascript'>
+        Vue.config.productionTip = false
+
+        const vm = new Vue({
+            el:'#root',
+            data:{
+                keyword:'',
+                sortType:'',
+                personArr:[
+                    {id:'001',name:'马冬梅',age:18},
+                    {id:'002',name:'周冬雨',age:19},
+                    {id:'003',name:'周杰伦',age:10},
+                    {id:'004',name:'温-伦',age:20}
+                ],
+                hobby:['study'],
+                gender:'man',
+                address:'beijing',
+                other:'',
+                accept:'',
+                age:''
+                // filPerson:[]
+            },
+            // watch:{
+            //     keyword:{
+            //         immediate: true,
+            //         handler(value) {
+            //             this.filPerson = this.personArr.filter((p) => {
+            //                 return p.name.indexOf(value) !== -1
+            //             })
+            //         }
+            //     }
+            // }
+
+            //用computed实现
+            computed:{
+                filPerson(){
+                    const arr = this.personArr.filter((p) =>{
+                        return  p.name.indexOf(this.keyword) !== -1
+                    })
+
+                    if(this.sortType){
+                        arr.sort((p1, p2) => {
+                            return this.sortType === 1 ? p1.age - p2.age : p2.age - p1.age
+                        })
+                    }
+
+                    return arr
+                }
+            },
+            methods:{
+                addPerson() {
+                    
+                    let p = { id: '005', name: '刘德华', age: 50 };
+                    //不可以用
+                    // this.personArr[0] = p
+                    //可以用
+                    this.personArr.unshift(p)
+
+                },
+                addGender(){
+                    Vue.set(vm.personArr[0],'gender','男')
+                    //vue.$set(vm._data.personArr[0],'gender','男')
+                    //vue.$set(this.personArr[0],'gender','男')
+                },
+                // show(){
+                //     console.log('hobby:',this.hobby)
+                //     console.log('gender',this.gender)
+                //     console.log('address',this.address)
+                // },
+                //提交
+                demo(){
+                    console.log('submit')
+                }
+            }
+        })
+    </script>
+</body>
+</html>

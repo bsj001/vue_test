@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件上的原型链</title>
+    <script type='text/javascript' src='../js/vue.js'></script>
+</head>
+
+<body>
+        <!--
+            Prototype:
+                1,VueComponent.prototype.__proto__ === Vue.prototype
+                2,让组件实例对象(vc)可以访问到Vue原型上的属性、方法。
+        -->
+    <div id='root'>
+    </div>
+    
+    <script type='text/javascript'>
+        Vue.config.productionTip = false
+
+        new Vue({
+            el: "#root",
+        })
+    </script>
+</body>
+
+</html>

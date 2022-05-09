@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内置指令</title>
+    <script type='text/javascript' src='../js/vue.js'></script>
+</head>
+<body>
+<!-- 
+    内置指令：
+        v-bind
+        v-model
+        v-for
+        v-on
+        v-if
+        v-else
+        v-show
+
+        v-text:
+            1,作用：向其所在的节点中渲染文本内容
+            2，与插值语法的区别：v-text会替换掉节点中的内容，{{xx}}则不会
+        v-html:
+            1，作用：向指定节点中渲染包含html结构的内容
+                v-html可以识别html结构
+                但是有安全问题，不要使用。易引发xxs攻击
+
+        v-clock:
+            1,本质是一个特殊属性，vue实例创建完毕并接管容器后，会删掉v-cloak属性。
+            2，使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题
+
+        v-once:
+            只动态渲染一次，然后变为静态资源
+        v-pre:
+            1,跳过其所在的节点的编译过程
+            2，可利用它跳过：滑使用指令语法、没有使用插值语法的节点，会加快编译。
+
+
+        自定义指令：
+ -->
+
+    <div id="root">
+        n的值是：<span>{{n}}</span><br>
+        现在n的值是：<span v-big='n'>{{n}}</span><br>
+        <input type="text" v-fbind='n'>
+    </div>
+
+    <script type="text/javascript">
+        Vue.config.productionTip = false
+        const vm = new Vue({
+            el:"#root",
+            data:{
+                //
+                n:100
+            },
+            directives:{
+                big(element,binding){
+                    // console.log('element',element,'binding',binding)
+                    element.innerText = binding.value * 10
+
+                },
+                fbind:{
+                    //指令与元素成功绑定时（一上来）
+                    bind(element,binding){
+                        // console.log('bind')
+                        element.value = binding.value * 2
+                    },
+                    //指令所在元素被插入页面时
+                    inserted(element,binding){
+                        element.focus()
+                    },
+                    //指令所在的模板被重新解析时
+                    update(element,binding){
+                        //
+                        element.value =  binding.value
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

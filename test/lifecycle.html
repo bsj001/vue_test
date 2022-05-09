@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命周期</title>
+    <script type='text/javascript' src='../js/vue.js'></script>
+</head>
+
+<body>
+        <!--
+             生命周期函数
+                beforeCreate
+                created
+                    Compile template into render "function" 此阶段Vue开始解析模板,
+                    生成虚拟DOM(内存中),页面还不能显示解析好的内容
+                    Compile el's outerHtml as template 
+                beforeMount 此时：页面中呈现的是 经过Vue编译的DOM，对DOM的操作均有效，到此
+                        初始化过程结束，一般在些进行：开启定时器，发送网络请求，订阅消息，绑定自定义事件
+                        等初始化操作
+                    Create vm.$el and replace 'el' with it 此内存中的虚拟DOM转为真实DOM插入页面
+                mounted
+                beforeUpdate 此时:数据是新的,但页面是旧的,即:页面尚未和数据保持同步
+                updated 根据新数据,生成新的虚拟DOM，随后与旧的虚拟DOM进行比较最终完成页面更新，
+                    即完成了Model－View的更新
+                beforeDestory: 此时,vm中所有的:data methods 指令等都处于可用状态,马上要执行销毁过程,
+                一般在此阶段,关闭定时器,取消订阅消息
+        -->
+    <div id='root'>
+    </div>
+    
+    <script type='text/javascript'>
+        Vue.config.productionTip = false
+        new Vue({
+            el: "#root",
+            data: {
+            },
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+1,初始化  npm init 
+2,安装express npm i express
+3,编写server.js
+4,创建static文件夹，并写到server.js上
+5,启动服务器  node server
